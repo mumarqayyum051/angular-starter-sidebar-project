@@ -4,20 +4,22 @@ import { LayoutComponent } from './core/layout/layout.component';
 
 const routes: Routes = [
   {
-    path: 'feed',
-    loadChildren: () =>
-      import('./modules/feed/feed.module').then((m) => m.FeedModule),
-  },
-  {
-    path: 'access-control',
-    loadChildren: () =>
-      import('./modules/access-control/access-control.module').then(
-        (m) => m.AccessControlModule
-      ),
-  },
-  {
     path: '',
     component: LayoutComponent,
+    children: [
+      {
+        path: 'feed',
+        loadChildren: () =>
+          import('./modules/feed/feed.module').then((m) => m.FeedModule),
+      },
+      {
+        path: 'access-control',
+        loadChildren: () =>
+          import('./modules/access-control/access-control.module').then(
+            (m) => m.AccessControlModule
+          ),
+      },
+    ],
   },
 ];
 

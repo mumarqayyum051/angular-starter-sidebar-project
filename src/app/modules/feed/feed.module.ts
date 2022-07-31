@@ -1,4 +1,4 @@
-import { Routes } from './../../core/auth/auth-routing.module';
+import { Routes } from './feed-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FeedComponent } from './feed.component';
