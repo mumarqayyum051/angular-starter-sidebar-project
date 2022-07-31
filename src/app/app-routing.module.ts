@@ -9,6 +9,13 @@ const routes: Routes = [
       import('./modules/feed/feed.module').then((m) => m.FeedModule),
   },
   {
+    path: 'access-control',
+    loadChildren: () =>
+      import('./modules/access-control/access-control.module').then(
+        (m) => m.AccessControlModule
+      ),
+  },
+  {
     path: '',
     component: LayoutComponent,
   },

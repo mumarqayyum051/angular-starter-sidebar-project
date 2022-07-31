@@ -22,6 +22,8 @@
       <ul class="mt-12">
         <li
           class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6"
+          [routerLink]="['/access-control']"
+          routerLinkActive="router-link-active"
         >
           <div class="flex items-center">
             <i class="fa-solid fa-universal-access"></i>
@@ -30,6 +32,8 @@
         </li>
         <li
           class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6"
+          [routerLink]="['/feed']"
+          routerLinkActive="router-link-active"
         >
           <div class="flex items-center">
             <i class="fa-solid fa-rss"></i>
@@ -202,7 +206,11 @@
         <li
           class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6"
         >
-          <div class="flex items-center">
+          <div
+            class="flex items-center"
+            [routerLink]="['/access-control']"
+            routerLinkActive="router-link-active"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="icon icon-tabler icon-tabler-grid"
@@ -226,6 +234,8 @@
         </li>
         <li
           class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center mb-6"
+          [routerLink]="['/feed']"
+          routerLinkActive="router-link-active"
         >
           <div class="flex items-center">
             <svg
@@ -335,14 +345,6 @@
           </svg>
         </li>
       </ul>
-    </div>
-  </div>
-  <!-- Sidebar ends -->
-  <!-- Remove class [ h-64 ] when adding a card block -->
-  <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6">
-    <!-- Remove class [ border-dashed border-2 border-gray-300 ] to remove dotted border -->
-    <div class="w-full h-full rounded border-dashed border-2 border-gray-300">
-      <!-- Place your content here -->
     </div>
   </div>
 </div>
