@@ -5,8 +5,14 @@ import { LoginComponent } from './login/login.component';
 import { RouterModule } from '@angular/router';
 import { Routes } from './auth-routing.module';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { LogggedInComponent } from './loggged-in/loggged-in.component';
 @NgModule({
   imports: [CommonModule, RouterModule.forChild(Routes)],
-  declarations: [AuthComponent, LoginComponent, SignInComponent],
+  declarations: [
+    AuthComponent,
+    LoginComponent,
+    SignInComponent,
+    LogggedInComponent,
+  ],
 })
 export class AuthModule {}
