@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HttpTokenInterceptor } from './interceptors';
 import { LayoutComponent } from './layout/layout.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { AccessControlService } from './services/access-control.service';
 import { ApiService } from './services/api.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { JwtService } from './services/jwt.service';
@@ -22,6 +23,7 @@ import { UserService } from './services/user.service';
     JwtService,
     AuthGuard,
     NoAuthGuard,
+    AccessControlService,
   ],
 })
 export class CoreModule {}

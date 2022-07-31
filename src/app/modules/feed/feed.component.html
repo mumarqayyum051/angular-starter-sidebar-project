@@ -67,8 +67,8 @@
 <ng-template #createPost>
   <div mat-dialog-title>Create Post</div>
   <div mat-dialog-content>
-    <mat-form-field appearance="fill" class="w-full">
-      <form [formGroup]="postForm">
+    <form [formGroup]="postForm">
+      <mat-form-field appearance="fill" class="w-full">
         <textarea
           placeholder="Post Description"
           rows="3"
@@ -76,8 +76,8 @@
           matTextareaAutosize
           formControlName="description"
         ></textarea>
-      </form>
-    </mat-form-field>
+      </mat-form-field>
+    </form>
   </div>
   <div mat-dialog-actions>
     <button mat-raised-button color="primary" (click)="onPostClicked()">

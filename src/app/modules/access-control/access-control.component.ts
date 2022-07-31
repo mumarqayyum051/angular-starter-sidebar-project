@@ -1,6 +1,15 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { AccessControlService } from 'src/app/core/services/access-control.service';
+import { PermissionsComponent } from './permissions/permissions.component';
 
 /**
  * @title Table with pagination
@@ -12,11 +21,77 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class AccessControlComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('addAdminUserModal') addAdminUserModal!: TemplateRef<any>;
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  form!: FormGroup;
+  constructor(
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private accessControlService: AccessControlService
+  ) {}
+  ngOnInit() {
+    this.createForm();
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  createForm() {
+    this.form = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      allowRead: [false, Validators.required],
+      allowCreate: [false, Validators.required],
+      allowUpdate: [false, Validators.required],
+      allowDelete: [false, Validators.required],
+    });
+  }
+
+  onCheckAll(e: any) {
+    if (e.checked) {
+      this.form.patchValue({
+        allowRead: true,
+        allowCreate: true,
+        allowUpdate: true,
+        allowDelete: true,
+      });
+    } else {
+      this.form.patchValue({
+        allowRead: false,
+        allowCreate: false,
+        allowUpdate: false,
+        allowDelete: false,
+      });
+    }
+  }
+
+  openAdminUserModal() {
+    this.dialog.open(this.addAdminUserModal, {
+      width: '40%',
+    });
+  }
+
+  onAddAdminUser() {
+    let form = this.form.value;
+    form.allowRead = form.allowRead ? 1 : 0;
+    form.allowCreate = form.allowCreate ? 1 : 0;
+    form.allowUpdate = form.allowUpdate ? 1 : 0;
+    form.allowDelete = form.allowDelete ? 1 : 0;
+
+    this.accessControlService.createUser(form).subscribe(
+      (response) => {
+        console.log('response', response);
+      },
+      (error) => {
+        console.log('error', error);
+      }
+    );
+  }
+
+  get f() {
+    return this.form.controls;
   }
 }
 

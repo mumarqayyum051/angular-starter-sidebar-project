@@ -1,4 +1,7 @@
-body {
-  width: 80%;
-  margin: 0 auto;
+::ng-deep.mat-dialog-container {
+  border-radius: 25px !important;
+}
+
+::ng-deep.mat-card {
+  border-radius: 25px !important;
 }

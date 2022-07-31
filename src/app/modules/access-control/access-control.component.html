@@ -1,6 +1,11 @@
 <div class="container mx-auto h-full w-full">
   <div class="m-3">
-    <button mat-raised-button color="primary" class="mb-2">
+    <button
+      mat-raised-button
+      color="primary"
+      class="mb-2"
+      (click)="openAdminUserModal()"
+    >
       Add
       <mat-icon>add</mat-icon>
     </button>
@@ -54,3 +59,66 @@
     </mat-card>
   </div>
 </div>
+
+<ng-template #addAdminUserModal>
+  <div mat-dialog-title>Create Admin User</div>
+  <div mat-dialog-content>
+    <form [formGroup]="form">
+      <!-- Section -->
+
+      <div class="grid grid-cols-1 w-full mt-8">
+        <!-- Name -->
+        <div class="col-span-4">
+          <mat-form-field class="fuse-mat-no-subscript w-full">
+            <mat-label>Username</mat-label>
+            <mat-icon
+              class="icon-size-5"
+              [svgIcon]="'heroicons_solid:user'"
+              matPrefix
+            ></mat-icon>
+            <input
+              placeholder="Username"
+              [formControlName]="'username'"
+              matInput
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-span-4">
+          <mat-form-field class="fuse-mat-no-subscript w-full">
+            <mat-label>Password</mat-label>
+            <mat-icon
+              class="icon-size-5"
+              [svgIcon]="'heroicons_solid:key'"
+              matPrefix
+            ></mat-icon>
+            <input
+              placeholder="Password"
+              type="password"
+              [formControlName]="'password'"
+              matInput
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-span-4">
+          <div class="grid grid-cols-2">
+            <mat-checkbox formControlName="allowRead">Read</mat-checkbox>
+            <mat-checkbox formControlName="allowCreate">Write</mat-checkbox>
+          </div>
+          <div class="grid grid-cols-2">
+            <mat-checkbox formControlName="updallowUpdate">Update</mat-checkbox>
+            <mat-checkbox formControlName="allowDelete">Delete</mat-checkbox>
+          </div>
+          <div class="grid grid-cols-2">
+            <mat-checkbox (change)="onCheckAll($event)">All</mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="mt-2">
+      <button mat-raised-button color="primary" (click)="onAddAdminUser()">
+        Add
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-template>
