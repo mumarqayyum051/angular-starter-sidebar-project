@@ -64,8 +64,11 @@ export class FeedComponent implements OnInit {
     this.feedService.getAllPosts().subscribe(
       (response) => {
         console.log(response);
+        this.result = response.data;
       },
-      ({ message }) => {}
+      ({ message }) => {
+        this._snackBar.open(message, 'Dismiss');
+      }
     );
   }
   createPostModal() {
