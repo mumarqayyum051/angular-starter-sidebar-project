@@ -4,9 +4,13 @@ import { LayoutComponent } from './core/layout/layout.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'feed',
     loadChildren: () =>
-      import('src/app/core/auth/auth.module').then((m) => m.AuthModule),
+      import('./modules/feed/feed.module').then((m) => m.FeedModule),
+  },
+  {
+    path: '',
+    component: LayoutComponent,
   },
 ];
 
