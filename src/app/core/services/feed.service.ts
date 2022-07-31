@@ -11,4 +11,8 @@ export class FeedService {
   createPost(data: any): Observable<any> {
     return this.apiService.post('/feed/createPost', data);
   }
+
+  getAllPosts(): Observable<any> {
+    return this.apiService.get('/feed/getAllPosts');
+  }
 }

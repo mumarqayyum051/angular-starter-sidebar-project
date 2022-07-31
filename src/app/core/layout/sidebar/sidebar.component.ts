@@ -9,6 +9,10 @@ import { Router } from '@angular/router';
 export class SidebarComponent implements OnInit {
   isList!: number;
   isMenu: boolean = false;
+  shouldRun = /(^|.)(stackblitz|webcontainer).(io|com)$/.test(
+    window.location.host
+  );
+
   isMenuBtn() {
     this.isMenu = !this.isMenu;
   }

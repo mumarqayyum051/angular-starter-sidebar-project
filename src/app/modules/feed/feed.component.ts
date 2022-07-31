@@ -5,6 +5,7 @@ import { Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { faker } from '@faker-js/faker';
 import { FeedService } from 'src/app/core/services/feed.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-feed',
@@ -18,7 +19,8 @@ export class FeedComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private fb: FormBuilder,
-    private feedService: FeedService
+    private feedService: FeedService,
+    private _snackBar: MatSnackBar
   ) {}
   result: any[] = [
     {
@@ -49,6 +51,7 @@ export class FeedComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    this.getAllPosts();
   }
 
   createForm() {
@@ -57,6 +60,14 @@ export class FeedComponent implements OnInit {
     });
   }
 
+  getAllPosts() {
+    this.feedService.getAllPosts().subscribe(
+      (response) => {
+        console.log(response);
+      },
+      ({ message }) => {}
+    );
+  }
   createPostModal() {
     console.log('triggered');
     this.dialog.open(this.createPost, {
@@ -69,7 +80,9 @@ export class FeedComponent implements OnInit {
       (response) => {
         console.log(response);
       },
-      ({ message }) => {}
+      ({ message }) => {
+        this._snackBar.open(message, 'Dismiss');
+      }
     );
   }
 }
