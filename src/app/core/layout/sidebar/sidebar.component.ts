@@ -1,19 +1,22 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit {
-
   isList!: number;
   isMenu: boolean = false;
   isMenuBtn() {
     this.isMenu = !this.isMenu;
   }
   isSearch: boolean = false;
-  constructor() {}
+  constructor(private router: Router) {}
   ngOnInit(): void {}
-
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/auth/login']);
+  }
 }

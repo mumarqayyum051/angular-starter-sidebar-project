@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { ApiService } from './api.service';
 export class FeedService {
   constructor(private apiService: ApiService) {}
 
-  createPost(data: any) {
-    this.apiService.post('/feed/createPost', data);
+  createPost(data: any): Observable<any> {
+    return this.apiService.post('/feed/createPost', data);
   }
 }

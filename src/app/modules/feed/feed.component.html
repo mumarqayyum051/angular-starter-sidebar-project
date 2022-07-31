@@ -68,16 +68,19 @@
   <div mat-dialog-title>Create Post</div>
   <div mat-dialog-content>
     <mat-form-field appearance="fill" class="w-full">
-      <textarea
-        placeholder="Post Description"
-        rows="3"
-        matInput
-        matTextareaAutosize
-      ></textarea>
+      <form [formGroup]="postForm">
+        <textarea
+          placeholder="Post Description"
+          rows="3"
+          matInput
+          matTextareaAutosize
+          formControlName="description"
+        ></textarea>
+      </form>
     </mat-form-field>
   </div>
   <div mat-dialog-actions>
-    <button mat-raised-button color="primary">
+    <button mat-raised-button color="primary" (click)="onPostClicked()">
       Post
       <mat-icon>add</mat-icon>
     </button>

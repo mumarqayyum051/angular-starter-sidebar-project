@@ -1,8 +1,10 @@
+import { FormBuilder, FormGroup } from '@angular/forms';
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { faker } from '@faker-js/faker';
-import { CreatePostComponent } from './create-post/create-post.component';
+import { FeedService } from 'src/app/core/services/feed.service';
 
 @Component({
   selector: 'app-feed',
@@ -12,7 +14,12 @@ import { CreatePostComponent } from './create-post/create-post.component';
 export class FeedComponent implements OnInit {
   @ViewChild('createPost') createPost!: TemplateRef<any>;
   today = new Date();
-  constructor(public dialog: MatDialog) {}
+  postForm!: FormGroup;
+  constructor(
+    public dialog: MatDialog,
+    private fb: FormBuilder,
+    private feedService: FeedService
+  ) {}
   result: any[] = [
     {
       id: 1,
@@ -40,12 +47,29 @@ export class FeedComponent implements OnInit {
     },
   ];
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.createForm();
+  }
+
+  createForm() {
+    this.postForm = this.fb.group({
+      description: ['', [Validators.required]],
+    });
+  }
 
   createPostModal() {
     console.log('triggered');
     this.dialog.open(this.createPost, {
       width: '50%',
     });
+  }
+
+  onPostClicked() {
+    this.feedService.createPost({ post: this.postForm.value }).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      ({ message }) => {}
+    );
   }
 }

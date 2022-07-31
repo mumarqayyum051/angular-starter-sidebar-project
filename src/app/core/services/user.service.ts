@@ -21,11 +21,11 @@ export class UserService {
     // If JWT detected, attempt to get & store user's info
     if (this.jwtService.getToken()) {
       console.log('this.jwtService.getToken()', this.jwtService.getToken());
-      return this.apiService.get('/user/context').pipe(
+      return this.apiService.get('/users/context').pipe(
         map((res) => {
-          // console.log('res.data.user', res)
-          this.setAuth(res.data.user);
-          return res.data.user;
+          console.log('res.data', res);
+          this.setAuth(res.data);
+          return res.data;
         }),
         catchError((e) => {
           this.purgeAuth();
@@ -42,7 +42,7 @@ export class UserService {
     // If JWT detected, attempt to get & store user's info
     if (this.jwtService.getToken()) {
       this.apiService.get('/user/context').subscribe(
-        (data) => this.setAuth(data.data.user),
+        (data) => this.setAuth(data.data),
         (err) => this.purgeAuth()
       );
     } else {
@@ -70,10 +70,11 @@ export class UserService {
     this.isAuthenticatedSubject.next(false);
   }
 
-  attemptAuth(credentials): Observable<any> {
-    return this.apiService.post('/users/login', { user: credentials }).pipe(
+  login(credentials: any): Observable<any> {
+    return this.apiService.post('/users/login', credentials).pipe(
       map((data) => {
-        this.setAuth(data.data.user);
+        console.log(data);
+        this.setAuth(data.data);
         return data;
       })
     );
@@ -96,7 +97,7 @@ export class UserService {
     return this.apiService.get('/user/profile');
   }
 
-  getUserById(userID): Observable<any> {
+  getUserById(userID: any): Observable<any> {
     return this.apiService.get(`/users/find/${userID}`);
   }
 
@@ -110,7 +111,7 @@ export class UserService {
   }
 
   // Update the user on the server (email, pass, etc)
-  update(user): Observable<any> {
+  update(user: any): Observable<any> {
     return this.apiService.put('/user', { user }).pipe(
       map((res) => {
         // Update the currentUser observable
@@ -120,14 +121,14 @@ export class UserService {
     );
   }
 
-  updateInstagramInfo(userID, data): Observable<any> {
+  updateInstagramInfo(userID: any, data: any): Observable<any> {
     return this.apiService.put(`/users/instagram/${userID}`, {
       instagram: data,
     });
   }
 
   // if admin Updates the user on the server (status etc)
-  updateUserByAdmin(id, user): Observable<any> {
+  updateUserByAdmin(id: any, user: any): Observable<any> {
     return this.apiService.put(`/users/${id}`, { user });
   }
 
