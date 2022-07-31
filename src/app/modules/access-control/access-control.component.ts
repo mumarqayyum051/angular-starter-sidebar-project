@@ -7,9 +7,10 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { AccessControlService } from 'src/app/core/services/access-control.service';
-import { PermissionsComponent } from './permissions/permissions.component';
+import { UserService } from 'src/app/core/services/user.service';
 
 /**
  * @title Table with pagination
@@ -22,16 +23,27 @@ import { PermissionsComponent } from './permissions/permissions.component';
 export class AccessControlComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('addAdminUserModal') addAdminUserModal!: TemplateRef<any>;
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = [
+    'index',
+    'username',
+    'userType',
+    'read',
+    'create',
+    'update',
+    'delete',
+  ];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   form!: FormGroup;
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private accessControlService: AccessControlService
+    private accessControlService: AccessControlService,
+    private _snackBar: MatSnackBar,
+    private userService: UserService
   ) {}
   ngOnInit() {
     this.createForm();
+    this.getAllUsers();
   }
 
   ngAfterViewInit() {
@@ -49,6 +61,19 @@ export class AccessControlComponent implements AfterViewInit {
     });
   }
 
+  getAllUsers() {
+    this.userService.getAllUsers().subscribe(
+      (response) => {
+        console.log('response', response);
+        if (response.status == 200) {
+          this.dataSource.data = response.data;
+        }
+      },
+      ({ message }) => {
+        this._snackBar.open(message, 'Dismiss');
+      }
+    );
+  }
   onCheckAll(e: any) {
     if (e.checked) {
       this.form.patchValue({
@@ -83,9 +108,14 @@ export class AccessControlComponent implements AfterViewInit {
     this.accessControlService.createUser(form).subscribe(
       (response) => {
         console.log('response', response);
+        if (response.status == 200) {
+          this._snackBar.open('User created successfully', '', {
+            duration: 2000,
+          });
+        }
       },
-      (error) => {
-        console.log('error', error);
+      ({ message }) => {
+        this._snackBar.open(message, 'Dismiss');
       }
     );
   }

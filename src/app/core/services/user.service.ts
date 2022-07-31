@@ -80,6 +80,10 @@ export class UserService {
     );
   }
 
+  getAllUsers() {
+    return this.apiService.get('/users/getAll');
+  }
+
   getCurrentUser(): any {
     return this.currentUserSubject.value;
   }
