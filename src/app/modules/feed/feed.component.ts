@@ -43,6 +43,9 @@ export class FeedComponent implements OnInit {
   ngOnInit() {}
 
   createPostModal() {
-    this.dialog.open(CreatePostComponent);
+    console.log('triggered');
+    this.dialog.open(this.createPost, {
+      width: '50%',
+    });
   }
 }

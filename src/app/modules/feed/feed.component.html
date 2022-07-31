@@ -53,7 +53,7 @@
           </div>
           <div class="post-body">
             <div class="description mt-2">
-              <p>
+              <p class="custom-font">
                 {{ post.description }}
               </p>
             </div>
@@ -67,12 +67,11 @@
 <ng-template #createPost>
   <div mat-dialog-title>Create Post</div>
   <div mat-dialog-content>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="w-full">
       <textarea
         placeholder="Post Description"
         rows="3"
         matInput
-        class="w-full"
         matTextareaAutosize
       ></textarea>
     </mat-form-field>

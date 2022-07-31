@@ -7,3 +7,16 @@
 .avatar > img {
   border-radius: 29px;
 }
+
+::ng-deep.mat-dialog-container {
+  border-radius: 25px !important;
+}
+
+::ng-deep.mat-card {
+  border-radius: 25px !important;
+}
+
+.custom-font {
+  color: #646262;
+  font-size: 14px;
+}
