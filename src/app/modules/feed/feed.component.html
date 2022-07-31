@@ -1,0 +1,86 @@
+<div class="m-3">
+  <button
+    mat-raised-button
+    color="primary"
+    class="mb-2"
+    (click)="createPostModal()"
+  >
+    Post
+    <mat-icon>add</mat-icon>
+  </button>
+  <div
+    class="grid-rows-1 sm:grid-rows-3 md:grid-rows-3 lg:grid-rows-3 grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-6 gap-2"
+  >
+    <mat-card
+      class="w-5.1/12 rounded-2xl col-span-4 sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-2 row-span-auto"
+      *ngFor="let post of result"
+    >
+      <div class="grid grid-cols-1">
+        <div class="col-auto">
+          <div class="header-info flex justify-between items-center">
+            <div class="userinfo flex flex-start">
+              <div class="avatar">
+                <img [src]="post.image" class="rounded-x1" />
+              </div>
+              <div class="username-and-time">
+                <div class="username font-bold text-base">
+                  <h3>{{ post.name }}</h3>
+                </div>
+                <div class="time font-light text-xs">
+                  <p>{{ post.date | date }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="actions">
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                aria-label="Example icon-button with a menu"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                  <mat-icon>edit</mat-icon>
+                  <span>Update</span>
+                </button>
+                <button mat-menu-item>
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </mat-menu>
+            </div>
+          </div>
+          <div class="post-body">
+            <div class="description mt-2">
+              <p>
+                {{ post.description }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+<ng-template #createPost>
+  <div mat-dialog-title>Create Post</div>
+  <div mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <textarea
+        placeholder="Post Description"
+        rows="3"
+        matInput
+        class="w-full"
+        matTextareaAutosize
+      ></textarea>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="primary">
+      Post
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</ng-template>

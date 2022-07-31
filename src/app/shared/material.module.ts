@@ -6,6 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [CommonModule, MatCardModule, MatPaginatorModule, MatIconModule],
@@ -17,6 +20,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatTableModule,
     MatInputModule,
     MatCheckboxModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatMenuModule,
   ],
 })
 export class MaterialModule {}
