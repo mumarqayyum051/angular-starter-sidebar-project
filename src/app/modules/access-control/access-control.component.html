@@ -1,5 +1,5 @@
-<div class="container mx-auto h-full w-full">
-  <div class="m-3">
+<div class="accessControlContainer px-3 p-5">
+  <div>
     <button
       mat-raised-button
       color="primary"
@@ -10,7 +10,7 @@
       <mat-icon>add</mat-icon>
     </button>
 
-    <mat-card class="rounded">
+    <mat-card class="rounded mt-3">
       <div class="flex flex-col flex-auto min-w-0">
         <table mat-table [dataSource]="dataSource?.data">
           <!-- Position Column -->
@@ -98,6 +98,17 @@
             </td>
           </ng-container>
 
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button (click)="openAdminUserModalEdit(element)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteUser(element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
@@ -110,7 +121,7 @@
 </div>
 
 <ng-template #addAdminUserModal>
-  <div mat-dialog-title>Create Admin User</div>
+  <div mat-dialog-title>{{ submitMode ? "Create" : "Update" }} Admin User</div>
   <div mat-dialog-content>
     <form [formGroup]="form">
       <!-- Section -->
@@ -123,11 +134,7 @@
             appearance="fill"
           >
             <mat-label>Username</mat-label>
-            <mat-icon
-              class="icon-size-5"
-              [svgIcon]="'heroicons_solid:user'"
-              matPrefix
-            ></mat-icon>
+
             <input
               placeholder="Username"
               [formControlName]="'username'"
@@ -141,11 +148,6 @@
             appearance="fill"
           >
             <mat-label>Password</mat-label>
-            <mat-icon
-              class="icon-size-5"
-              [svgIcon]="'heroicons_solid:key'"
-              matPrefix
-            ></mat-icon>
             <input
               placeholder="Password"
               type="password"
@@ -164,15 +166,23 @@
             <mat-checkbox formControlName="allowDelete">Delete</mat-checkbox>
           </div>
           <div class="grid grid-cols-2">
-            <mat-checkbox (change)="onCheckAll($event)">All</mat-checkbox>
+            <mat-checkbox
+              (change)="onCheckAll($event)"
+              [checked]="allPermissions"
+              >All</mat-checkbox
+            >
           </div>
         </div>
       </div>
     </form>
     <div class="mt-2">
-      <button mat-raised-button color="primary" (click)="onAddAdminUser()">
-        Add
-        <mat-icon>add</mat-icon>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="submitMode ? onAddAdminUser() : onUpdateAdminUser()"
+      >
+        {{ submitMode ? "Add" : "Update" }}
+        <mat-icon>{{ submitMode ? "add" : "edit" }}</mat-icon>
       </button>
     </div>
   </div>

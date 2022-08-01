@@ -23,6 +23,7 @@ import { UserService } from 'src/app/core/services/user.service';
 export class AccessControlComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('addAdminUserModal') addAdminUserModal!: TemplateRef<any>;
+  submitMode = true;
   displayedColumns: string[] = [
     'index',
     'username',
@@ -31,9 +32,12 @@ export class AccessControlComponent implements AfterViewInit {
     'create',
     'update',
     'delete',
+    'actions',
   ];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   form!: FormGroup;
+  selectedUser: any;
+  allPermissions: boolean = false;
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
@@ -98,6 +102,44 @@ export class AccessControlComponent implements AfterViewInit {
     });
   }
 
+  openAdminUserModalEdit(user: any) {
+    this.form.patchValue(user);
+    this.selectedUser = user;
+    if (
+      user.allowRead == 1 &&
+      user.allowCreate == 1 &&
+      user.allowUpdate == 1 &&
+      user.allowDelete == 1
+    ) {
+      this.allPermissions = true;
+    } else {
+      this.allPermissions = false;
+    }
+    const dialog = this.dialog.open(this.addAdminUserModal, {
+      width: '40%',
+    });
+    dialog.afterClosed().subscribe((result) => {
+      this.allPermissions = false;
+    });
+  }
+  deleteUser(user: any) {
+    this.accessControlService.deleteUser(user.id).subscribe(
+      (response) => {
+        console.log('response', response);
+        if (response.status == 200) {
+          this._snackBar.open('User deleted successfully', '', {
+            duration: 2000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          });
+          this.getAllUsers();
+        }
+      },
+      ({ message }) => {
+        this._snackBar.open(message, 'Dismiss');
+      }
+    );
+  }
   onAddAdminUser() {
     let form = this.form.value;
     form.allowRead = form.allowRead ? 1 : 0;
@@ -112,12 +154,37 @@ export class AccessControlComponent implements AfterViewInit {
           this._snackBar.open('User created successfully', '', {
             duration: 2000,
           });
+          this.getAllUsers();
         }
       },
       ({ message }) => {
         this._snackBar.open(message, 'Dismiss');
       }
     );
+  }
+  onUpdateAdminUser() {
+    let form = this.form.value;
+    form.allowRead = form.allowRead ? 1 : 0;
+    form.allowCreate = form.allowCreate ? 1 : 0;
+    form.allowUpdate = form.allowUpdate ? 1 : 0;
+    form.allowDelete = form.allowDelete ? 1 : 0;
+
+    this.accessControlService
+      .updateUser({ user: this.form.value }, this.selectedUser.id)
+      .subscribe(
+        (response) => {
+          console.log('response', response);
+          if (response.status == 200) {
+            this._snackBar.open('User updated successfully', '', {
+              duration: 2000,
+            });
+            this.getAllUsers();
+          }
+        },
+        ({ message }) => {
+          this._snackBar.open(message, 'Dismiss');
+        }
+      );
   }
 
   get f() {

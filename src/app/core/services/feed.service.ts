@@ -15,4 +15,14 @@ export class FeedService {
   getAllPosts(): Observable<any> {
     return this.apiService.get('/feed/getAllPosts');
   }
+
+  onPostAction(data: any, actionType: any): Observable<any> {
+    return this.apiService.post(`/feed/${actionType}`, data);
+  }
+  onPostDelete(id: any): Observable<any> {
+    return this.apiService.delete(`/feed/deletePost/${id}`);
+  }
+  onPostUpdate(data: any, id: any): Observable<any> {
+    return this.apiService.put(`/feed/updatePost/${id}`, data);
+  }
 }

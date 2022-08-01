@@ -1,4 +1,3 @@
-import { UserService } from 'src/app/core/services/user.service';
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -7,14 +6,14 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 
-import { take } from 'rxjs/operators';
 import { JwtService } from './jwt.service';
+import { UserService } from './user.service';
 
 @Injectable()
-export class NoAuthGuard implements CanActivate {
+export class PermissionAuthGuard implements CanActivate {
   constructor(
-    private userService: UserService,
     private router: Router,
+    private userService: UserService,
     private jwtService: JwtService
   ) {}
 
@@ -23,13 +22,13 @@ export class NoAuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean {
     if (this.jwtService.getToken()) {
-      let user = this.userService.getCurrentUser();
-      console.log('**', user);
-
-      this.router.navigate(['/access-control']);
-
-      return false;
+      const userType = this.userService.getCurrentUser()?.userType;
+      if (userType !== 'SuperAdmin') {
+        this.router.navigate(['/feed']);
+        return false;
+      }
+      return true;
     }
-    return true;
+    return false;
   }
 }

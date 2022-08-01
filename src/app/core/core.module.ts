@@ -10,6 +10,7 @@ import { ApiService } from './services/api.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { JwtService } from './services/jwt.service';
 import { NoAuthGuard } from './services/no-auth-gaurd.service';
+import { PermissionAuthGuard } from './services/permission-auth-guard.service';
 import { UserService } from './services/user.service';
 
 @NgModule({
@@ -24,6 +25,7 @@ import { UserService } from './services/user.service';
     AuthGuard,
     NoAuthGuard,
     AccessControlService,
+    PermissionAuthGuard,
   ],
 })
 export class CoreModule {}

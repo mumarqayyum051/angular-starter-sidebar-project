@@ -23,5 +23,7 @@
 
 .feedContainer {
   height: 100vh;
-  overflow-y: scroll;
+  width: 100%;
+  overflow-y: auto;
+  background-color: #e9e9e9;
 }
