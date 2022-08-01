@@ -70,13 +70,14 @@ export class FeedComponent implements OnInit {
         if (response.data.length > 0) {
           let permissions: any = [];
           Object.entries(response.data[0]).forEach(([key, value]) => {
-            if (key.includes('allow')) {
+            if (key.includes('allow') && value == 1) {
               permissions.push({
                 [key]: value,
               });
             }
           });
 
+          console.log(permissions);
           this.permissions = permissions;
         } else {
           this.permissions = [];
@@ -88,6 +89,7 @@ export class FeedComponent implements OnInit {
     );
   }
   createPostModal() {
+    this.postForm.reset();
     console.log('triggered');
     this.dialog.open(this.createPost, {
       width: '50%',
@@ -98,6 +100,11 @@ export class FeedComponent implements OnInit {
     this.feedService.createPost({ post: this.postForm.value }).subscribe(
       (response) => {
         console.log(response);
+        this._snackBar.open('Post Published!!', '', {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+        });
         this.getAllPosts();
         this.postForm.reset();
         this.dialog.closeAll();

@@ -149,8 +149,8 @@
           >
             <mat-label>Password</mat-label>
             <input
-              placeholder="Password"
-              type="password"
+              [placeholder]="submitMode ? 'Password' : 'Password(optional)'"
+              [type]="submitMode ? 'password' : 'text'"
               [formControlName]="'password'"
               matInput
             />

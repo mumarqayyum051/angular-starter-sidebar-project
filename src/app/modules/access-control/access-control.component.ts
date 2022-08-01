@@ -38,6 +38,7 @@ export class AccessControlComponent implements AfterViewInit {
   form!: FormGroup;
   selectedUser: any;
   allPermissions: boolean = false;
+  currentUser: any;
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
@@ -48,6 +49,7 @@ export class AccessControlComponent implements AfterViewInit {
   ngOnInit() {
     this.createForm();
     this.getAllUsers();
+    this.currentUser = this.userService.getCurrentUser();
   }
 
   ngAfterViewInit() {
@@ -97,14 +99,19 @@ export class AccessControlComponent implements AfterViewInit {
   }
 
   openAdminUserModal() {
+    this.form.reset();
     this.dialog.open(this.addAdminUserModal, {
       width: '40%',
     });
   }
 
   openAdminUserModalEdit(user: any) {
+    this.form.reset();
     this.form.patchValue(user);
     this.selectedUser = user;
+    this.submitMode = false;
+    this.form.get('password')?.setValidators([]);
+    this.form.get('password')?.updateValueAndValidity();
     if (
       user.allowRead == 1 &&
       user.allowCreate == 1 &&
@@ -120,6 +127,9 @@ export class AccessControlComponent implements AfterViewInit {
     });
     dialog.afterClosed().subscribe((result) => {
       this.allPermissions = false;
+      this.submitMode = true;
+      this.form.get('password')?.setValidators([Validators.required]);
+      this.form.get('password')?.updateValueAndValidity();
     });
   }
   deleteUser(user: any) {
@@ -141,6 +151,14 @@ export class AccessControlComponent implements AfterViewInit {
     );
   }
   onAddAdminUser() {
+    if (this.form.invalid) {
+      this._snackBar.open('Please fill all the required fields', 'Dismiss', {
+        duration: 2000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+      return;
+    }
     let form = this.form.value;
     form.allowRead = form.allowRead ? 1 : 0;
     form.allowCreate = form.allowCreate ? 1 : 0;
@@ -155,6 +173,7 @@ export class AccessControlComponent implements AfterViewInit {
             duration: 2000,
           });
           this.getAllUsers();
+          this.dialog.closeAll();
         }
       },
       ({ message }) => {
@@ -163,6 +182,14 @@ export class AccessControlComponent implements AfterViewInit {
     );
   }
   onUpdateAdminUser() {
+    if (this.form.invalid) {
+      this._snackBar.open('Please fill all the required fields', 'Dismiss', {
+        duration: 2000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+      return;
+    }
     let form = this.form.value;
     form.allowRead = form.allowRead ? 1 : 0;
     form.allowCreate = form.allowCreate ? 1 : 0;
@@ -179,6 +206,7 @@ export class AccessControlComponent implements AfterViewInit {
               duration: 2000,
             });
             this.getAllUsers();
+            this.dialog.closeAll();
           }
         },
         ({ message }) => {

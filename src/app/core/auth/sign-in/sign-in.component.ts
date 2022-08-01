@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 
@@ -13,7 +14,8 @@ export class SignInComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -34,8 +36,10 @@ export class SignInComponent implements OnInit {
           this.router.navigate(['/feed']);
         }
       },
-      (err) => {
-        console.log('err  ', err);
+      ({ message }) => {
+        this._snackBar.open(message, '', {
+          duration: 2000,
+        });
       }
     );
   }
